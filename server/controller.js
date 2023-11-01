@@ -1,5 +1,5 @@
 const goals = require('./db.json');
-let globalId = 1
+let globalId = 3
 
 module.exports = {
     getGoals: (req, res) => res.status(200).send(goals), 
@@ -24,17 +24,19 @@ module.exports = {
         const { goal } = req.body;
         const newGoal ={
             id:globalId,
-            goal
+            goal,
         };
+        console.log("Creating goal card for:", newGoal.id); //leaving these in so you can see the bug at when you try to any of the 3 top ones after adding a few.
     
         goals.push(newGoal);
-        console.log(goals)
         res.status(200).send(goals);
         globalId++
     },
     deleteGoal: (req,res) => {
-        let index = goals.findIndex(elem => elem.id === +req.params.id);
+        const id = req.params.id
+        let index = goals.findIndex(element => element.id === parseInt(id));
+        console.log("Deleting goal with ID:", id); //leaving these in so you can see the bug at when you try to any of the 3 top ones after adding a few.
         goals.splice(index, 1);
-        res.status(200).send(movies);
+        res.status(200).send(goals);
     }
 };

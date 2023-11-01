@@ -19,13 +19,11 @@ const getFortune = () => {
     });
 };
 
-
+const baseURL = `http://localhost:4000/api/goals`;
 const goalsCallback = ({data: goals}) => showGoals(goals);
-const getAllgoals = () => axios.get(`http://localhost:4000/api/goals`).then(goalsCallback)
-const createGoal = body => {
-    axios.post('http://localhost:4000/api/goals', body)
-    .then(goalsCallback)
-};
+const getAllGoals = () => axios.get(`${baseURL}`).then(goalsCallback)
+const createGoal = body => axios.post(`${baseURL}`, body).then(getAllGoals());
+const deleteGoal = id => axios.delete(`${baseURL}/${id}`).then(getAllGoals());
 
 
 //Submit Handler
@@ -38,7 +36,9 @@ const submitHandler = (e) => {
         goal: newGoal.value,
     };
     
-    createGoal(bodyObj);
+    createGoal(bodyObj).then(() => getAllGoals());
+
+    newGoal.value = '';
 };
 
 
@@ -46,8 +46,12 @@ const createGoalCard = (goal) => {
     const goalCard = document.createElement("div");
     goalCard.classList.add('goal-card');
     
-    goalCard.innerHTML = `<p>${goal.value}</p>
-    <button onclick="deleteGoal(${goal.id})">delete</button>`
+    goalCard.innerHTML = 
+        `<p>${goal.goal}
+            <button 
+            onclick="deleteGoal(${goal.id})">delete
+            </button>
+        </p>`        
     
     goalsContainer.appendChild(goalCard)
 }
@@ -56,11 +60,11 @@ const showGoals = arr => {
     goalsContainer.innerHTML = ``;
     for(let i = 0; i < arr.length; i++){
         createGoalCard(arr[i]);
-    };
+    }
 };
 
 complimentBtn.addEventListener('click', getCompliment);
 fortuneBtn.addEventListener('click', getFortune);
-form.addEventListener('submit', createGoalCard);
+form.addEventListener('submit', submitHandler);
 
 getAllGoals();
