@@ -47,11 +47,9 @@ const createGoalCard = (goal) => {
     goalCard.classList.add('goal-card');
     
     goalCard.innerHTML = 
-        `<p>${goal.goal}
-            <button 
-            onclick="deleteGoal(${goal.id})">delete
-            </button>
-        </p>`        
+        `<p>${goal.goal}</p>  
+            <button class="delete-button" data-id=${goal.id}>delete
+            </button>`       
     
     goalsContainer.appendChild(goalCard)
 }
@@ -63,8 +61,17 @@ const showGoals = arr => {
     }
 };
 
+const deleteHandler = event => {
+    if(event.target.classList.contains("delete-button")){
+        const goalId = event.target.getAttribute("data-id");
+
+        deleteGoal(goalId)
+    }
+}
+
 complimentBtn.addEventListener('click', getCompliment);
 fortuneBtn.addEventListener('click', getFortune);
 form.addEventListener('submit', submitHandler);
+goalsContainer.addEventListener('click', deleteHandler)
 
 getAllGoals();

@@ -1,4 +1,4 @@
-const goals = require('./db.json');
+let goals = require('./db.json');
 let globalId = 3
 
 module.exports = {
@@ -26,17 +26,23 @@ module.exports = {
             id:globalId,
             goal,
         };
-        console.log("Creating goal card for:", newGoal.id); //leaving these in so you can see the bug at when you try to any of the 3 top ones after adding a few.
-    
+            console.log(newGoal.id)
         goals.push(newGoal);
         res.status(200).send(goals);
         globalId++
     },
     deleteGoal: (req,res) => {
         const id = req.params.id
+        console.log("pre slice goals:", goals)
+        console.log("passed in id:", id)
         let index = goals.findIndex(element => element.id === parseInt(id));
-        console.log("Deleting goal with ID:", id); //leaving these in so you can see the bug at when you try to any of the 3 top ones after adding a few.
-        goals.splice(index, 1);
-        res.status(200).send(goals);
+        const goalToDelete = goals.splice(index, 1)
+        console.log("deleted goal:", goalToDelete)
+        console.log("post slice goals:", goals)
+        res.status(200).send(goalToDelete);
     }
 };
+
+// console.log("shows goals", goals)
+//         console.log("Deleting goal with ID:", id); //leaving these in so you can see the bug at when you try to any of the 3 top ones after adding a few.
+//         console.log("goals spliced", goals.splice(index, 1));
