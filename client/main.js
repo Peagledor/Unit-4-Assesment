@@ -44,12 +44,12 @@ const submitHandler = (e) => {
 
 const createGoalCard = (goal) => {
     const goalCard = document.createElement("div");
-    goalCard.classList.add('goal-card');
+    goalCard.classList.add('.goal-card');
     
     goalCard.innerHTML = 
-        `<p>${goal.goal}</p>  
+        `<p>${goal.goal}
             <button class="delete-button" data-id=${goal.id}>delete
-            </button>`       
+            </button></p>`       
     
     goalsContainer.appendChild(goalCard)
 }
@@ -62,10 +62,14 @@ const showGoals = arr => {
 };
 
 const deleteHandler = event => {
-    if(event.target.classList.contains("delete-button")){
+    event.preventDefault();
+
+    if(event.target.classList.contains(".delete-button")){
         const goalId = event.target.getAttribute("data-id");
 
+        
         deleteGoal(goalId)
+        goalCard.innerHTML = ''
     }
 }
 
